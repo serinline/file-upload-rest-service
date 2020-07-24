@@ -37,7 +37,9 @@ public class RecordController {
 
     @GetMapping("/get/{primaryKey}")
     public ResponseEntity<Record> getRecord(@PathVariable String primaryKey){
-        return ResponseEntity.ok().body(recordService.getRecordByPrimaryKey(primaryKey));
+        return ResponseEntity
+                .ok()
+                .body(recordService.getRecordByPrimaryKey(primaryKey));
     }
 
     @DeleteMapping("/delete/{primaryKey}")

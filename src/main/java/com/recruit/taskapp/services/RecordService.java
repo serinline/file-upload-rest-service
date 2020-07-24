@@ -1,5 +1,6 @@
 package com.recruit.taskapp.services;
 
+import com.recruit.taskapp.exceptions.UableToStoreDataException;
 import com.recruit.taskapp.helpers.ReadFileHelper;
 import com.recruit.taskapp.models.Record;
 import com.recruit.taskapp.repositories.RecordRepository;
@@ -19,7 +20,7 @@ public class RecordService {
         try {
             recordRepository.saveAll(ReadFileHelper.processDataToRecords(file.getInputStream()));
         } catch (IOException e) {
-            throw new RuntimeException("fail to store data: " + e.getMessage());
+            throw new UableToStoreDataException("fail to store data: " + e.getMessage());
         }
     }
 

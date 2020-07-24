@@ -9,7 +9,7 @@ public class Record {
 
     @Id
     @Column(name = "PRIMARY_KEY")
-    private String primary_key;
+    private String primaryKey;
 
     @Column(name = "name")
     private String name;
@@ -22,19 +22,19 @@ public class Record {
 
     public Record(){}
 
-    public Record(String primary_key, String name, String description, LocalDateTime localDateTime){
-        this.setPrimaryKey(primary_key);
+    public Record(String primaryKey, String name, String description, LocalDateTime localDateTime){
+        this.setPrimaryKey(primaryKey);
         this.setName(name);
         this.setDescription(description);
         this.setLocalDateTime(localDateTime);
     }
 
-    private void setPrimaryKey(String primary_key) {
-        this.primary_key = primary_key;
+    private void setPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
     }
 
     public String getPrimaryKey() {
-        return primary_key;
+        return primaryKey;
     }
 
     private void setName(String name) {
