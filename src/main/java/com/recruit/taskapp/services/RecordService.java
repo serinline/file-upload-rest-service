@@ -1,6 +1,7 @@
 package com.recruit.taskapp.services;
 
 import com.recruit.taskapp.helpers.ReadFileHelper;
+import com.recruit.taskapp.models.Record;
 import com.recruit.taskapp.repositories.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,15 @@ public class RecordService {
         }
     }
 
+    public Record getRecordByPrimaryKey(String primaryKey){
+        return recordRepository.findById(primaryKey).orElse(null);
+    }
 
+    public boolean deleteRecordByPrimaryKey(String primaryKey){
+        if (recordRepository.existsById(primaryKey)){
+            recordRepository.deleteById(primaryKey);
+            return true;
+        }
+        return false;
+    }
 }

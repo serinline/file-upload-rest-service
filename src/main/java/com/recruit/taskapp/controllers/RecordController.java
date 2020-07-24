@@ -2,14 +2,12 @@ package com.recruit.taskapp.controllers;
 
 import com.recruit.taskapp.helpers.ReadFileHelper;
 import com.recruit.taskapp.models.Message;
+import com.recruit.taskapp.models.Record;
 import com.recruit.taskapp.services.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("http://localhost:8090")
@@ -36,4 +34,18 @@ public class RecordController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("Upload proper file"));
     }
+
+    @GetMapping("/get/{primaryKey}")
+    public ResponseEntity<Record> getRecord(@PathVariable String primaryKey){
+        return ResponseEntity.ok().body(recordService.getRecordByPrimaryKey(primaryKey));
+    }
+
+    @DeleteMapping("/delete/{primaryKey}")
+    public ResponseEntity<String> deletePost(@PathVariable String primaryKey) {
+        if (!recordService.deleteRecordByPrimaryKey(primaryKey)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(primaryKey, HttpStatus.OK);
+    }
+
 }
