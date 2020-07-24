@@ -22,7 +22,7 @@ public class RecordController {
     @PostMapping("/upload")
     public ResponseEntity<Message> uploadFile(@RequestParam("file") MultipartFile file) {
 
-        if (ReadFileHelper.hasProperFormat(file)) {
+        if (ReadFileHelper.hasProperFormat(file) && ReadFileHelper.validateFile(file)) {
             try {
                 recordService.saveToDatabase(file);
                 return ResponseEntity
