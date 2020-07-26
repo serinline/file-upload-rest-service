@@ -1,15 +1,18 @@
 package com.recruit.taskapp.helpers;
 
-import com.opencsv.bean.CsvToBeanBuilder;
 import com.recruit.taskapp.models.Record;
-import org.apache.commons.validator.GenericValidator;
 import org.springframework.web.multipart.MultipartFile;
-import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 
 public class ReadFileHelper {
@@ -34,9 +37,9 @@ public class ReadFileHelper {
                     if(!values[1].getClass().equals(String.class) || !values[2].getClass().equals(String.class)){
                         return false;
                     }
-                    if (!GenericValidator.isDate(values[3], "yyyy-MM-dd", true)){
-                        return false;
-                    }
+//                    if (!GenericValidator.isDate(values[3], "yyyy-MM-dd", true)){
+//                        return false;
+//                    }
                 }
                 if(counter == 6 && !(line.trim().equals("") || line.trim().equals("\n"))){
                     return false;
@@ -56,24 +59,30 @@ public class ReadFileHelper {
     }
 
     public static List processDataToRecords(InputStream is) {
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-            HeaderColumnNameMappingStrategy<Record> strategy
-                    = new HeaderColumnNameMappingStrategy<>();
-            strategy.setType(Record.class);
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+             CSVParser csvParser = new CSVParser(fileReader,
+                     CSVFormat.DEFAULT
+                             .withFirstRecordAsHeader()
+                             .withIgnoreHeaderCase()
+                             .withTrim())) {
 
-            return new CsvToBeanBuilder(fileReader)
-                    .withType(Record.class)
-                    .withMappingStrategy(strategy)
-                    .withIgnoreLeadingWhiteSpace(true)
-                    .build()
-                    .parse();
+            List<Record> records = new ArrayList<>();
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+
+            for (CSVRecord csvRecord : csvRecords) {
+                Record record = new Record(
+                        csvRecord.get("PRIMARY_KEY"),
+                        csvRecord.get("NAME"),
+                        csvRecord.get("DESCRIPTION"),
+                        LocalDateTime.parse(csvRecord.get("UPDATED_TIMESTAMP"))
+                );
+                records.add(record);
+            }
+
+            return records;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("fail to parse CSV file");
         }
-        return Collections.emptyList();
     }
-
 }

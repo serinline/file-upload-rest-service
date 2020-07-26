@@ -27,6 +27,7 @@ public class RecordController {
                         .status(HttpStatus.OK)
                         .body(new Message("Uploaded the file successfully"));
             } catch (Exception e) {
+                e.printStackTrace();
                 return ResponseEntity
                         .status(HttpStatus.EXPECTATION_FAILED)
                         .body(new Message("Could not upload the file"));

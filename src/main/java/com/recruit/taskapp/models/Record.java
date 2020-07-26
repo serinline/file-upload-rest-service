@@ -1,5 +1,7 @@
 package com.recruit.taskapp.models;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
