@@ -3,6 +3,7 @@ package com.recruit.taskapp.helpers;
 import com.recruit.taskapp.exceptions.FileParseException;
 import com.recruit.taskapp.exceptions.InvalidFileException;
 import com.recruit.taskapp.models.Record;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -17,7 +18,10 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 
+@Component
 public class ReadFileHelper {
+
+    public ReadFileHelper(){}
 
     public static boolean validateFile(MultipartFile file){
         try(BufferedReader fileReader = new BufferedReader(new InputStreamReader(file.getInputStream()))){
@@ -35,6 +39,9 @@ public class ReadFileHelper {
                     return false;
                 }
             }
+            if(counter < 6){
+                return false;
+            }
         }  catch (IOException e){
             throw new InvalidFileException("The content of file is invalid");
         }
@@ -42,7 +49,7 @@ public class ReadFileHelper {
     }
 
     public static boolean hasProperFormat(MultipartFile file) {
-        return "text/csv".equals(file.getContentType());
+        return ("text/csv".equals(file.getContentType()) || "text/plain".equals(file.getContentType()));
     }
 
     public static List processDataToRecords(InputStream is) {
