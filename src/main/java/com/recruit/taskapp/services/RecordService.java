@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service
 public class RecordService {
@@ -21,7 +20,7 @@ public class RecordService {
         try {
             recordRepository.saveAll(ReadFileHelper.processDataToRecords(file.getInputStream()));
         } catch (IOException e) {
-            throw new UableToStoreDataException("fail to store data: " + e.getMessage());
+            throw new UableToStoreDataException("fail to store data");
         }
     }
 

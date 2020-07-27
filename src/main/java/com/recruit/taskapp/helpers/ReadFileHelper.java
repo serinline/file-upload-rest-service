@@ -1,14 +1,16 @@
 package com.recruit.taskapp.helpers;
 
+import com.recruit.taskapp.exceptions.FileParseException;
+import com.recruit.taskapp.exceptions.InvalidFileException;
 import com.recruit.taskapp.models.Record;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -26,21 +28,6 @@ public class ReadFileHelper {
                 if (counter == 1 && !line.equals("PRIMARY_KEY,NAME,DESCRIPTION,UPDATED_TIMESTAMP")){
                     return false;
                 }
-                if (counter >= 2 && counter <= 5){
-                    String[] values = line.split(",");
-                    if (values.length != 4){
-                        return false;
-                    }
-                    if (values[0].isEmpty() || !values[0].getClass().equals(String.class)){
-                        return false;
-                    }
-                    if(!values[1].getClass().equals(String.class) || !values[2].getClass().equals(String.class)){
-                        return false;
-                    }
-//                    if (!GenericValidator.isDate(values[3], "yyyy-MM-dd", true)){
-//                        return false;
-//                    }
-                }
                 if(counter == 6 && !(line.trim().equals("") || line.trim().equals("\n"))){
                     return false;
                 }
@@ -49,7 +36,7 @@ public class ReadFileHelper {
                 }
             }
         }  catch (IOException e){
-            e.printStackTrace();
+            throw new InvalidFileException("The content of file is invalid");
         }
         return true;
     }
@@ -59,7 +46,7 @@ public class ReadFileHelper {
     }
 
     public static List processDataToRecords(InputStream is) {
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT
                              .withFirstRecordAsHeader()
@@ -82,7 +69,7 @@ public class ReadFileHelper {
 
             return records;
         } catch (IOException e) {
-            throw new RuntimeException("fail to parse CSV file");
+            throw new FileParseException("Fail to parse CSV file");
         }
     }
 }
