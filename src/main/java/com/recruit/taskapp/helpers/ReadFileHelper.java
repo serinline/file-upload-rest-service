@@ -69,7 +69,7 @@ public class ReadFileHelper {
 
             return records;
         } catch (IOException e) {
-            throw new FileParseException("Fail to parse CSV file");
+            throw new FileParseException("Failed to parse CSV file");
         }
     }
 }

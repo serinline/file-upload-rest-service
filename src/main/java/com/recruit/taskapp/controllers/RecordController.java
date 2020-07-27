@@ -44,11 +44,7 @@ public class RecordController {
     }
 
     @DeleteMapping("/delete/{primaryKey}")
-    public ResponseEntity<String> deletePost(@PathVariable String primaryKey) {
-        if (!recordService.deleteRecordByPrimaryKey(primaryKey)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(primaryKey, HttpStatus.OK);
+    public void deletePost(@PathVariable String primaryKey) {
+        recordService.deleteRecordByPrimaryKey(primaryKey);
     }
-
 }

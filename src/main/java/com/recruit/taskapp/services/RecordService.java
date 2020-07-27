@@ -28,11 +28,7 @@ public class RecordService {
         return recordRepository.findById(primaryKey).orElse(null);
     }
 
-    public boolean deleteRecordByPrimaryKey(String primaryKey){
-        if (recordRepository.existsById(primaryKey)){
-            recordRepository.deleteById(primaryKey);
-            return true;
-        }
-        return false;
+    public void deleteRecordByPrimaryKey(String primaryKey){
+        recordRepository.deleteById(primaryKey);
     }
 }
