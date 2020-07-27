@@ -1,19 +1,23 @@
-package com.recruit.taskapp.helpers;
+package com.recruit.taskapp.unit.helpers;
 
+import com.recruit.taskapp.helpers.ReadFileHelper;
 import com.recruit.taskapp.models.Record;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class ReadFileHelperTest {
 
@@ -47,20 +51,20 @@ public class ReadFileHelperTest {
 
     @Test
     public void testHasProperFormat(){
-        Assert.assertTrue(readFileHelper.hasProperFormat(properFile));
+        Assert.assertTrue(ReadFileHelper.hasProperFormat(properFile));
     }
 
     @Test
     public void testValidateFile(){
-        Assert.assertTrue(readFileHelper.validateFile(properFile));
-        Assert.assertFalse(readFileHelper.validateFile(notProperFile));
+        Assert.assertTrue(ReadFileHelper.validateFile(properFile));
+        Assert.assertFalse(ReadFileHelper.validateFile(notProperFile));
     }
 
     @Test
     public void testProcessDataToRecords() throws IOException {
-        List<Record> result = readFileHelper.processDataToRecords(properFile.getInputStream());
+        List<Record> result = ReadFileHelper.processDataToRecords(properFile.getInputStream());
         Assert.assertEquals("Test description2", result.get(1).getDescription());
-        Assert.assertTrue(result.size() == 4);
+        Assert.assertEquals(4, result.size());
     }
 
 }

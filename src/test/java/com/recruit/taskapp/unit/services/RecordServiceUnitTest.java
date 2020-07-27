@@ -1,7 +1,8 @@
-package com.recruit.taskapp.services;
+package com.recruit.taskapp.unit.services;
 
 import com.google.gson.Gson;
 import com.recruit.taskapp.models.Record;
+import com.recruit.taskapp.services.RecordService;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
