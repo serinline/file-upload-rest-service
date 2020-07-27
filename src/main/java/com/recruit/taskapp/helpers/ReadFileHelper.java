@@ -32,14 +32,8 @@ public class ReadFileHelper {
                 if (counter == 1 && !line.equals("PRIMARY_KEY,NAME,DESCRIPTION,UPDATED_TIMESTAMP")){
                     return false;
                 }
-                if(counter == 6 && !(line.trim().equals("") || line.trim().equals("\n"))){
-                    return false;
-                }
-                if(counter > 6){
-                    return false;
-                }
             }
-            if(counter < 6){
+            if(5 > counter || counter > 6){
                 return false;
             }
         }  catch (IOException e){
