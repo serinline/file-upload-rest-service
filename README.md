@@ -11,3 +11,4 @@ The files should:
 * first line of file (header) must be "PRIMARY_KEY,NAME,DESCRIPTION,UPDATED_TIMESTAMP"
 * next 4 lines represents single record
 * Primary Key must be non-blank string 
+* updated_timestamp must fill the pattern: "yyyy-MM-ddTHH:mm:ss"
