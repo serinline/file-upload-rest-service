@@ -21,7 +21,9 @@ import org.apache.commons.csv.CSVRecord;
 @Component
 public class ReadFileHelper {
 
-    public ReadFileHelper(){}
+    public ReadFileHelper(){
+        //nothing to do
+    }
 
     public static boolean validateFile(MultipartFile file){
         try(BufferedReader fileReader = new BufferedReader(new InputStreamReader(file.getInputStream()))){
@@ -37,7 +39,7 @@ public class ReadFileHelper {
                 return false;
             }
         }  catch (IOException e){
-            throw new InvalidFileException("The content of file is invalid");
+            throw new InvalidFileException();
         }
         return true;
     }
@@ -70,7 +72,7 @@ public class ReadFileHelper {
 
             return records;
         } catch (IOException e) {
-            throw new FileParseException("Failed to parse CSV file");
+            throw new FileParseException();
         }
     }
 }

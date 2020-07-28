@@ -1,5 +1,6 @@
 package com.recruit.taskapp.services;
 
+import com.recruit.taskapp.exceptions.RecordNotFoundException;
 import com.recruit.taskapp.exceptions.UableToStoreDataException;
 import com.recruit.taskapp.helpers.ReadFileHelper;
 import com.recruit.taskapp.models.Record;
@@ -20,12 +21,12 @@ public class RecordService {
         try {
             recordRepository.saveAll(ReadFileHelper.processDataToRecords(file.getInputStream()));
         } catch (IOException e) {
-            throw new UableToStoreDataException("fail to store data");
+            throw new UableToStoreDataException();
         }
     }
 
     public Record getRecordByPrimaryKey(String primaryKey){
-        return recordRepository.findById(primaryKey).orElse(null);
+        return recordRepository.findById(primaryKey).orElseThrow(() -> new RecordNotFoundException(primaryKey));
     }
 
     public void deleteRecordByPrimaryKey(String primaryKey){

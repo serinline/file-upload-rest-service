@@ -1,10 +1,12 @@
 package com.recruit.taskapp.controllers;
 
+import com.recruit.taskapp.exceptions.RecordNotFoundException;
 import com.recruit.taskapp.helpers.ReadFileHelper;
 import com.recruit.taskapp.models.Message;
 import com.recruit.taskapp.models.Record;
 import com.recruit.taskapp.services.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,6 @@ public class RecordController {
                         .status(HttpStatus.OK)
                         .body(new Message("Uploaded the file successfully"));
             } catch (Exception e) {
-                e.printStackTrace();
                 return ResponseEntity
                         .status(HttpStatus.EXPECTATION_FAILED)
                         .body(new Message("Could not upload the file"));
@@ -45,6 +46,10 @@ public class RecordController {
 
     @DeleteMapping("/delete/{primaryKey}")
     public void deletePost(@PathVariable String primaryKey) {
-        recordService.deleteRecordByPrimaryKey(primaryKey);
+        try {
+            recordService.deleteRecordByPrimaryKey(primaryKey);
+        } catch(EmptyResultDataAccessException e){
+            throw new RecordNotFoundException(primaryKey);
+        }
     }
 }
